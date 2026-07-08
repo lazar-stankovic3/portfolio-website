@@ -1,0 +1,11 @@
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 32px;
+}
+
+.projects-more {
+    display: flex;
+    justify-content: center;
+    margin-top: 44px;
+}

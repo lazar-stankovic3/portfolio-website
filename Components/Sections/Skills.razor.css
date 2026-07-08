@@ -1,0 +1,25 @@
+.skills-groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 24px;
+}
+
+.skills-group {
+    background: var(--surface);
+    border: 3px solid var(--border-ink);
+    border-radius: var(--radius-md);
+    padding: 22px;
+    box-shadow: 6px 6px 0 var(--shadow-color);
+}
+
+.skills-group h3 {
+    font-size: 1rem;
+    color: var(--primary);
+    margin-bottom: 14px;
+}
+
+.skills-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}

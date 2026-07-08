@@ -1,0 +1,52 @@
+@rendermode InteractiveServer
+@inject I18nService I18n
+@implements IDisposable
+
+<header class="navbar">
+    <div class="container navbar-inner">
+        <a href="#top" class="brand">
+            <span class="brand-blob">LS</span>
+            <span class="brand-name">Lazar<strong>.dev</strong></span>
+        </a>
+
+        <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox" />
+        <label for="nav-toggle" class="nav-toggle" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </label>
+
+        <nav class="nav-links">
+            <a href="#about" class="nav-link">@I18n.T("nav.about")</a>
+            <a href="#skills" class="nav-link">@I18n.T("nav.skills")</a>
+            <a href="#projects" class="nav-link">@I18n.T("nav.projects")</a>
+            <a href="#contact" class="nav-link">@I18n.T("nav.contact")</a>
+
+            <div class="nav-controls">
+                <button type="button" class="lang-switch" @onclick="ToggleLanguage" title="EN / SR">
+                    <span class="@(I18n.Language == "en" ? "lang-active" : "")">EN</span>
+                    <span class="@(I18n.Language == "sr" ? "lang-active" : "")">SR</span>
+                </button>
+
+                <button type="button" class="theme-toggle" data-theme-toggle title="@I18n.T("nav.theme")" aria-label="@I18n.T("nav.theme")">
+                    <span class="theme-icon-light">☀️</span>
+                    <span class="theme-icon-dark">🌙</span>
+                </button>
+            </div>
+        </nav>
+    </div>
+</header>
+
+@code {
+    protected override void OnInitialized()
+    {
+        I18n.OnChange += HandleChange;
+    }
+
+    private void ToggleLanguage() => I18n.Toggle();
+
+    private void HandleChange() => InvokeAsync(StateHasChanged);
+
+    public void Dispose()
+    {
+        I18n.OnChange -= HandleChange;
+    }
+}

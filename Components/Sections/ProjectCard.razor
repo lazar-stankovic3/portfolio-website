@@ -1,0 +1,23 @@
+@inherits I18nComponentBase
+
+<article class="card-sticker project-card reveal" style="--card-accent: var(@Project.AccentVar)">
+    <div class="project-badge">@Project.Emoji</div>
+    <h3 class="project-title">@Project.Name</h3>
+    <p class="project-desc">@(I18n.Language == "sr" ? Project.DescriptionSr : Project.DescriptionEn)</p>
+
+    <div class="project-tech">
+        @foreach (var tech in Project.Tech)
+        {
+            <span class="chip project-chip">@tech</span>
+        }
+    </div>
+
+    <a href="@Project.GithubUrl" target="_blank" rel="noopener" class="btn btn-primary project-link">
+        🐙 @I18n.T("projects.cta")
+    </a>
+</article>
+
+@code {
+    [Parameter, EditorRequired]
+    public Project Project { get; set; } = default!;
+}

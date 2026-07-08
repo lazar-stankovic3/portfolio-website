@@ -1,0 +1,34 @@
+@rendermode InteractiveServer
+@inject I18nService I18n
+@implements IDisposable
+
+<footer class="site-footer">
+    <div class="container footer-inner">
+        <a href="#top" class="footer-brand">
+            <span class="brand-blob">LS</span>
+        </a>
+
+        <p class="footer-built">@I18n.T("footer.built")</p>
+
+        <div class="footer-socials">
+            <a href="https://github.com/lazar-stankovic3" target="_blank" rel="noopener" class="social-pill" aria-label="GitHub">🐙 GitHub</a>
+            <a href="mailto:lazar.stanko1@@gmail.com" class="social-pill" aria-label="Email">✉️ Email</a>
+        </div>
+
+        <p class="footer-rights">© @DateTime.Now.Year Lazar Stanković — @I18n.T("footer.rights")</p>
+    </div>
+</footer>
+
+@code {
+    protected override void OnInitialized()
+    {
+        I18n.OnChange += HandleChange;
+    }
+
+    private void HandleChange() => InvokeAsync(StateHasChanged);
+
+    public void Dispose()
+    {
+        I18n.OnChange -= HandleChange;
+    }
+}

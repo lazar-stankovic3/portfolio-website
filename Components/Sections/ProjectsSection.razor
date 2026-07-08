@@ -1,0 +1,24 @@
+@inherits I18nComponentBase
+
+<section class="section section-alt projects" id="projects">
+    <div class="container">
+        <div class="section-head reveal">
+            <span class="kicker">🗂️ Projects</span>
+            <h2 class="section-title">@I18n.T("projects.heading")</h2>
+            <p class="section-subtitle">@I18n.T("projects.subtitle")</p>
+        </div>
+
+        <div class="projects-grid">
+            @foreach (var project in ProjectCatalog.All)
+            {
+                <ProjectCard Project="project" />
+            }
+        </div>
+
+        <div class="projects-more reveal">
+            <a href="https://github.com/lazar-stankovic3" target="_blank" rel="noopener" class="btn btn-ghost">
+                🐙 @I18n.T("projects.viewProfile")
+            </a>
+        </div>
+    </div>
+</section>

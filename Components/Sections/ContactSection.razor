@@ -1,0 +1,127 @@
+@inherits I18nComponentBase
+@inject IEmailSender EmailSender
+@inject ILogger<ContactSection> Logger
+
+<section class="section contact" id="contact">
+    <div class="blob blob-accent contact-blob" aria-hidden="true"></div>
+
+    <div class="container contact-inner">
+        <div class="contact-info reveal">
+            <span class="kicker">💌 Contact</span>
+            <h2 class="section-title">@I18n.T("contact.heading")</h2>
+            <p class="contact-subtitle">@I18n.T("contact.subtitle")</p>
+
+            <div class="contact-links">
+                <a href="mailto:lazar.stanko1@@gmail.com" class="contact-pill">
+                    <span>✉️</span>
+                    <span>
+                        <strong>@I18n.T("contact.info.emailLabel")</strong>
+                        <small>lazar.stanko1@@gmail.com</small>
+                    </span>
+                </a>
+                <a href="https://github.com/lazar-stankovic3" target="_blank" rel="noopener" class="contact-pill">
+                    <span>🐙</span>
+                    <span>
+                        <strong>@I18n.T("contact.info.githubLabel")</strong>
+                        <small>github.com/lazar-stankovic3</small>
+                    </span>
+                </a>
+            </div>
+        </div>
+
+        <div class="card-sticker contact-form-card reveal">
+            <EditForm Model="_form" OnSubmit="HandleSubmit">
+                <div class="form-field">
+                    <label for="name">@I18n.T("contact.form.name")</label>
+                    <InputText id="name" @bind-Value="_form.Name" disabled="@(_state == FormState.Sending)" />
+                    @if (_nameError is not null)
+                    {
+                        <span class="field-error">@_nameError</span>
+                    }
+                </div>
+
+                <div class="form-field">
+                    <label for="email">@I18n.T("contact.form.email")</label>
+                    <InputText id="email" @bind-Value="_form.Email" disabled="@(_state == FormState.Sending)" />
+                    @if (_emailError is not null)
+                    {
+                        <span class="field-error">@_emailError</span>
+                    }
+                </div>
+
+                <div class="form-field">
+                    <label for="message">@I18n.T("contact.form.message")</label>
+                    <InputTextArea id="message" rows="5" @bind-Value="_form.Message" disabled="@(_state == FormState.Sending)" />
+                    @if (_messageError is not null)
+                    {
+                        <span class="field-error">@_messageError</span>
+                    }
+                </div>
+
+                <button type="submit" class="btn btn-primary contact-submit" disabled="@(_state == FormState.Sending)">
+                    @(_state == FormState.Sending ? I18n.T("contact.form.sending") : I18n.T("contact.form.submit"))
+                </button>
+
+                @if (_state == FormState.Success)
+                {
+                    <p class="form-message form-success">🎉 @I18n.T("contact.form.success")</p>
+                }
+                else if (_state == FormState.Error)
+                {
+                    <p class="form-message form-error">⚠️ @I18n.T("contact.form.error")</p>
+                }
+            </EditForm>
+        </div>
+    </div>
+</section>
+
+@code {
+    private enum FormState { Idle, Sending, Success, Error }
+
+    private sealed class ContactFormModel
+    {
+        public string Name { get; set; } = "";
+        public string Email { get; set; } = "";
+        public string Message { get; set; } = "";
+    }
+
+    private readonly ContactFormModel _form = new();
+    private FormState _state = FormState.Idle;
+    private string? _nameError;
+    private string? _emailError;
+    private string? _messageError;
+
+    private async Task HandleSubmit()
+    {
+        _nameError = string.IsNullOrWhiteSpace(_form.Name) ? I18n.T("contact.validation.name") : null;
+        _emailError = IsValidEmail(_form.Email) ? null : I18n.T("contact.validation.email");
+        _messageError = string.IsNullOrWhiteSpace(_form.Message) ? I18n.T("contact.validation.message") : null;
+
+        if (_nameError is not null || _emailError is not null || _messageError is not null)
+        {
+            _state = FormState.Idle;
+            return;
+        }
+
+        _state = FormState.Sending;
+        StateHasChanged();
+
+        try
+        {
+            await EmailSender.SendContactMessageAsync(_form.Name.Trim(), _form.Email.Trim(), _form.Message.Trim());
+            _state = FormState.Success;
+            _form.Name = "";
+            _form.Email = "";
+            _form.Message = "";
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Failed to send contact message from {Email}", _form.Email);
+            _state = FormState.Error;
+        }
+    }
+
+    private static bool IsValidEmail(string email) =>
+        !string.IsNullOrWhiteSpace(email) &&
+        System.Text.RegularExpressions.Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+}

@@ -1,0 +1,31 @@
+.page-shell {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+#blazor-error-ui {
+    background: var(--accent, lightyellow);
+    color: var(--border-ink, #1F1533);
+    font-family: var(--font-body, sans-serif);
+    font-weight: 600;
+    bottom: 0;
+    box-shadow: 0 -2px 0 var(--border-ink, #000);
+    display: none;
+    left: 0;
+    padding: 0.9rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.9rem;
+        top: 0.8rem;
+    }

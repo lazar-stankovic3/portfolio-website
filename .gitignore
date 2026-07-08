@@ -1,0 +1,23 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+
+## Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Ll]og/
+
+## User-specific / secrets
+appsettings.*.local.json
+secrets.json
+*.pfx
+*.pem
+
+## OS
+.DS_Store
+Thumbs.db

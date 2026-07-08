@@ -1,0 +1,34 @@
+@inherits I18nComponentBase
+
+<section class="hero" id="hero">
+    <div class="blob blob-primary hero-blob-1" aria-hidden="true"></div>
+    <div class="blob blob-accent hero-blob-2" aria-hidden="true"></div>
+    <div class="blob blob-pink hero-blob-3" aria-hidden="true"></div>
+
+    <div class="container hero-inner">
+        <div class="hero-copy reveal">
+            <p class="hero-greeting">@I18n.T("hero.greeting") <span class="hero-name">Lazar Stanković</span> 👋</p>
+            <h1 class="hero-role">@I18n.T("hero.role")</h1>
+            <p class="hero-tagline">@I18n.T("hero.tagline")</p>
+
+            <div class="hero-cta">
+                <a href="#projects" class="btn btn-primary">@I18n.T("hero.cta.projects")</a>
+                <a href="#contact" class="btn btn-ghost">@I18n.T("hero.cta.contact")</a>
+            </div>
+        </div>
+
+        <div class="hero-art reveal">
+            <div class="avatar-blob">
+                <span>LS</span>
+            </div>
+            <div class="float-sticker sticker-1" aria-hidden="true">💻</div>
+            <div class="float-sticker sticker-2" aria-hidden="true">🚀</div>
+            <div class="float-sticker sticker-3" aria-hidden="true">✨</div>
+        </div>
+    </div>
+
+    <a href="#about" class="scroll-hint" aria-label="@I18n.T("hero.scroll")">
+        <span>@I18n.T("hero.scroll")</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m0 0l-6-6m6 6l6-6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+</section>

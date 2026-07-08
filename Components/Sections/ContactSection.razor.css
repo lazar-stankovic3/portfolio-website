@@ -1,0 +1,115 @@
+.contact { position: relative; }
+
+.contact-blob {
+    width: 300px;
+    height: 300px;
+    top: -40px;
+    right: -100px;
+}
+
+.contact-inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: .9fr 1.1fr;
+    gap: 48px;
+    align-items: start;
+}
+
+.contact-subtitle {
+    font-size: 1.02rem;
+    margin: 6px 0 28px;
+    max-width: 42ch;
+}
+
+.contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.contact-pill {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--surface);
+    border: 3px solid var(--border-ink);
+    border-radius: var(--radius-md);
+    padding: 14px 18px;
+    box-shadow: 5px 5px 0 var(--shadow-color);
+    transition: transform .18s ease;
+    width: fit-content;
+}
+
+.contact-pill:hover { transform: translate(-3px, -3px); }
+
+.contact-pill > span:first-child { font-size: 1.5rem; }
+
+.contact-pill strong {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: .92rem;
+}
+
+.contact-pill small { color: var(--text-muted); }
+
+.contact-form-card {
+    padding: 32px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 18px;
+}
+
+.form-field label {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: .88rem;
+}
+
+.form-field ::deep(input), .form-field ::deep(textarea) {
+    font-family: var(--font-body);
+    font-size: .95rem;
+    color: var(--text);
+    background: var(--bg);
+    border: 2.5px solid var(--border-ink);
+    border-radius: var(--radius-sm);
+    padding: 11px 14px;
+    resize: vertical;
+    transition: box-shadow .18s ease;
+}
+
+.form-field ::deep(input:focus), .form-field ::deep(textarea:focus) {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(var(--primary-rgb), .25);
+}
+
+.field-error {
+    color: var(--accent-2);
+    font-size: .82rem;
+    font-weight: 600;
+}
+
+.contact-submit {
+    width: 100%;
+    margin-top: 4px;
+}
+
+.form-message {
+    margin: 14px 0 0;
+    font-weight: 600;
+    font-size: .92rem;
+    text-align: center;
+}
+
+.form-success { color: #1FA971; }
+.form-error { color: #E0455B; }
+
+@media (max-width: 900px) {
+    .contact-inner { grid-template-columns: 1fr; }
+    .contact-links { align-items: center; }
+    .contact-pill { width: 100%; }
+}
