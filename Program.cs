@@ -16,6 +16,7 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddScoped<I18nService>();
 builder.Services.AddScoped<IEmailSender, SmtpEmailSender>();
+builder.Services.AddSingleton<TerminalCommandService>();
 
 var app = builder.Build();
 

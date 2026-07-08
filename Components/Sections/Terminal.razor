@@ -1,0 +1,104 @@
+@implements IDisposable
+@inject I18nService I18n
+@inject TerminalCommandService TerminalService
+@inject IJSRuntime JS
+
+<section class="section terminal-section" id="terminal">
+    <div class="container">
+        <div class="section-head reveal">
+            <span class="kicker">🖥️ Live Backend</span>
+            <h2 class="section-title">@I18n.T("terminal.heading")</h2>
+            <p class="section-subtitle">@I18n.T("terminal.subtitle")</p>
+        </div>
+
+        <div class="terminal-window reveal">
+            <div class="terminal-titlebar">
+                <span class="terminal-dot dot-red"></span>
+                <span class="terminal-dot dot-yellow"></span>
+                <span class="terminal-dot dot-green"></span>
+                <span class="terminal-title">guest@lazar-portfolio: ~</span>
+            </div>
+
+            <div class="terminal-body" @ref="_bodyRef" @onclick="FocusInput">
+                @foreach (var line in _history)
+                {
+                    <div class="terminal-line @line.CssClass">@line.Text</div>
+                }
+                <div class="terminal-input-line">
+                    <span class="terminal-prompt">guest@@@_guestId:~$</span>
+                    <input @ref="_inputRef"
+                           class="terminal-input"
+                           @bind="_currentInput" @bind:event="oninput"
+                           @onkeydown="HandleKeyDown"
+                           autocomplete="off" autocapitalize="off" spellcheck="false" />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@code {
+    private sealed record TerminalLine(string Text, string CssClass);
+
+    private readonly List<TerminalLine> _history = new();
+    private string _currentInput = "";
+    private readonly string _guestId = Guid.NewGuid().ToString("N")[..6];
+    private ElementReference _bodyRef;
+    private ElementReference _inputRef;
+    private bool _shouldScroll;
+
+    protected override void OnInitialized()
+    {
+        I18n.OnChange += HandleI18nChange;
+        TerminalService.RegisterSession();
+
+        _history.Add(new TerminalLine(
+            "Type 'help' to see what this terminal can do — every command runs on the real backend.",
+            "line-output"));
+    }
+
+    private void HandleI18nChange() => InvokeAsync(StateHasChanged);
+
+    private void HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key != "Enter" || string.IsNullOrWhiteSpace(_currentInput))
+        {
+            return;
+        }
+
+        var command = _currentInput.Trim();
+        _history.Add(new TerminalLine($"guest@{_guestId}:~$ {command}", "line-cmd"));
+
+        if (command.Equals("clear", StringComparison.OrdinalIgnoreCase))
+        {
+            _history.Clear();
+        }
+        else
+        {
+            foreach (var line in TerminalService.Execute(command, I18n.Language))
+            {
+                _history.Add(new TerminalLine(line, "line-output"));
+            }
+        }
+
+        _currentInput = "";
+        _shouldScroll = true;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_shouldScroll)
+        {
+            _shouldScroll = false;
+            await JS.InvokeVoidAsync("scrollElementToBottom", _bodyRef);
+        }
+    }
+
+    private async Task FocusInput() => await _inputRef.FocusAsync();
+
+    public void Dispose()
+    {
+        I18n.OnChange -= HandleI18nChange;
+        TerminalService.UnregisterSession();
+    }
+}

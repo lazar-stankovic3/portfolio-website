@@ -8,6 +8,7 @@ public static class Translations
         ["nav.skills"] = ("Skills", "Veštine"),
         ["nav.projects"] = ("Projects", "Projekti"),
         ["nav.contact"] = ("Contact", "Kontakt"),
+        ["nav.terminal"] = ("Terminal", "Terminal"),
         ["nav.theme"] = ("Toggle theme", "Promeni temu"),
 
         ["hero.greeting"] = ("Hey, I'm", "Ćao, ja sam"),
@@ -42,6 +43,11 @@ public static class Translations
         ["projects.subtitle"] = ("A couple of projects I'm proud of — check the code on GitHub", "Par projekata na koje sam ponosan — pogledaj kod na GitHub-u"),
         ["projects.cta"] = ("View on GitHub", "Pogledaj na GitHub-u"),
         ["projects.viewProfile"] = ("See all repos on GitHub", "Svi repozitorijumi na GitHub-u"),
+
+        ["terminal.heading"] = ("Poke the Backend", "Dirni backend"),
+        ["terminal.subtitle"] = (
+            "A real terminal wired straight into this site's ASP.NET Core server. Type 'help' to start.",
+            "Pravi terminal povezan direktno na ASP.NET Core server ovog sajta. Ukucaj 'help' za početak."),
 
         ["contact.heading"] = ("Let's Build Something", "Hajde da napravimo nešto"),
         ["contact.subtitle"] = ("Got a project, an internship, or just want to say hi? My inbox is open.", "Imaš projekat, praksu, ili samo želiš da pozdraviš? Sanduče mi je otvoreno."),
